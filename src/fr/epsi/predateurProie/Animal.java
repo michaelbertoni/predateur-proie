@@ -4,28 +4,29 @@ package fr.epsi.predateurProie;
  * Created by Michael on 31/10/2016.
  */
 public class Animal {
-    public double posX;
-    public double posY;
-    public double PAS;
+    protected double posX;
+    protected double posY;
+    protected double PAS;
     protected double vitesseX;
     protected double vitesseY;
 
-    public Animal() {}
-    public Animal(double _x, double _y) {
-        posX = _x;
-        posY = _y;
+    protected Animal() {}
+
+    protected void normaliser() {
+        double longueur = Math.sqrt(vitesseX * vitesseX + vitesseY * vitesseY);
+        vitesseX /= longueur;
+        vitesseY /= longueur;
     }
 
-    public double Distance(Animal o) {
+    protected double Distance(Animal o) {
         return Math.sqrt((o.posX - posX) * (o.posX - posX) + (o.posY - posY) * (o.posY - posY));
     }
 
-    public double DistanceCarre(Animal o) {
-        double distanceCarre = (o.posX - posX) * (o.posX - posX) + (o.posY - posY) * (o.posY - posY);
-        return distanceCarre;
+    protected double DistanceCarre(Animal o) {
+        return (o.posX - posX) * (o.posX - posX) + (o.posY - posY) * (o.posY - posY);
     }
 
-    public void miseAJourPosition() {
+    protected void miseAJourPosition() {
         posX += PAS * vitesseX;
         posY += PAS * vitesseY;
         double largeur = Prairie.getInstance().getLargeur();

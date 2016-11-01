@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class ParametresJPanel extends JPanel {
         private static ParametresJPanel instance;
 
-    public static ParametresJPanel getInstance() {
+    protected static ParametresJPanel getInstance() {
         if (instance == null) {
             instance = new ParametresJPanel();
         }
@@ -31,7 +31,7 @@ public class ParametresJPanel extends JPanel {
     private JLabel nbLapinsLive;
     private JLabel nbRenardsLive;
 
-    public ParametresJPanel() {
+    protected ParametresJPanel() {
         super(new BorderLayout());
         this.setBackground(Color.LIGHT_GRAY);
 
@@ -78,7 +78,7 @@ public class ParametresJPanel extends JPanel {
 
     private void frequenceApparitionTField() {
         frequenceApparitionTField = new JTextField(String.valueOf(Prairie.FREQUENCE_APPARITION_ANIMAUX_SECONDES));
-        JLabel frequenceApparitionLab = new JLabel("<html>Fréq.<br>apparition (sec)</html>");
+        JLabel frequenceApparitionLab = new JLabel("<html>Fréq.<br>apparition (s)</html>");
         frequenceApparitionLab.setLabelFor(frequenceApparitionTField);
         labelInputPanel.add(frequenceApparitionLab);
         fieldPanel.add(frequenceApparitionTField);
@@ -94,7 +94,7 @@ public class ParametresJPanel extends JPanel {
 
     private void dureeVieRenardTField() {
         dureeVieRenardTField = new JTextField(String.valueOf(Prairie.DUREE_VIE_RENARD));
-        JLabel dureeVieRenardLab = new JLabel("<html>Durée vie<br>renards (sec)</html>");
+        JLabel dureeVieRenardLab = new JLabel("<html>Espérance de vie renards<br>sans manger (s)</html>");
         dureeVieRenardLab.setLabelFor(dureeVieRenardTField);
         labelInputPanel.add(dureeVieRenardLab);
         fieldPanel.add(dureeVieRenardTField);
@@ -110,7 +110,7 @@ public class ParametresJPanel extends JPanel {
 
     private void nombreRenardsInitialTField() {
         nombreRenardsInitialTField = new JTextField(String.valueOf(Prairie.NOMBRE_RENARDS_INITIAL));
-        JLabel nombreRenardsInitialLab = new JLabel("<html>Nombre lapins<br>initial</html>");
+        JLabel nombreRenardsInitialLab = new JLabel("<html>Nombre renards<br>initial</html>");
         nombreRenardsInitialLab.setLabelFor(nombreRenardsInitialTField);
         labelInputPanel.add(nombreRenardsInitialLab);
         fieldPanel.add(nombreRenardsInitialTField);
@@ -119,14 +119,14 @@ public class ParametresJPanel extends JPanel {
     private Runnable majParametres = () -> {
         Prairie.FREQUENCE_APPARITION_ANIMAUX_SECONDES = Long.valueOf(frequenceApparitionTField.getText());
         Prairie.getInstance().frequenceApparitionAnimauxSchedule.cancel(true);
-        Prairie.getInstance().frequenceApparitionAnimauxSchedule = Prairie.executor.scheduleAtFixedRate(Prairie.getInstance().apparitionAnimaux, 0, Prairie.FREQUENCE_APPARITION_ANIMAUX_SECONDES, TimeUnit.SECONDS);
-        Prairie.DISTANCE_VISIBILITE_RENARD = Long.valueOf(frequenceApparitionTField.getText());
+        Prairie.getInstance().frequenceApparitionAnimauxSchedule = Prairie.executor.scheduleAtFixedRate(Prairie.getInstance().apparitionAnimaux, Prairie.FREQUENCE_APPARITION_ANIMAUX_SECONDES, Prairie.FREQUENCE_APPARITION_ANIMAUX_SECONDES, TimeUnit.SECONDS);
+        Prairie.DISTANCE_VISIBILITE_RENARD = Double.valueOf(distanceVisibiliteRenardTField.getText());
         Prairie.DUREE_VIE_RENARD = Integer.valueOf(dureeVieRenardTField.getText());
         Prairie.NOMBRE_LAPINS_INITIAL = Integer.valueOf(nombreLapinsInitialTField.getText());
         Prairie.NOMBRE_RENARDS_INITIAL = Integer.valueOf(nombreRenardsInitialTField.getText());
     };
 
-    public Runnable majCompteurs = () -> {
+    protected Runnable majCompteurs = () -> {
         nbLapinsLive.setText("Nombre lapins : " + String.valueOf(Prairie.getInstance().lapins.size()));
         nbRenardsLive.setText("Nombre renards : " + String.valueOf(Prairie.getInstance().renards.size()));
     };

@@ -29,16 +29,16 @@ public class Prairie extends Observable{
     protected static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     // PARAMETRES DE L'APPLICATION
-    public static long FREQUENCE_APPARITION_ANIMAUX_SECONDES = 1;
-    public static int NOMBRE_LAPINS_INITIAL = 10;
-    public static int NOMBRE_RENARDS_INITIAL = 20;
+    public static long FREQUENCE_APPARITION_ANIMAUX_SECONDES = 3;
+    public static int NOMBRE_LAPINS_INITIAL = 15;
+    public static int NOMBRE_RENARDS_INITIAL = 5;
     public static double DISTANCE_VISIBILITE_RENARD = 1000;
-    public static int DUREE_VIE_RENARD = 30;
+    public static int DUREE_VIE_RENARD = 10;
 
     // Attributs
     protected Random generateur;
-    protected double largeur;
-    protected double hauteur;
+    private double largeur;
+    private double hauteur;
     protected ArrayList<Lapin> lapins;
     protected ArrayList<Renard> renards;
     protected ScheduledFuture frequenceApparitionAnimauxSchedule;
@@ -50,10 +50,10 @@ public class Prairie extends Observable{
         generateur = new Random();
     }
 
-    public double getLargeur() { return largeur; }
-    public double getHauteur() { return hauteur; }
+    protected double getLargeur() { return largeur; }
+    protected double getHauteur() { return hauteur; }
 
-    public void initialiser(int _nbLapins, int _nbRenards, double _largeur, double _hauteur) {
+    protected void initialiser(int _nbLapins, int _nbRenards, double _largeur, double _hauteur) {
         largeur = _largeur;
         hauteur = _hauteur;
         lapins.clear();
@@ -68,27 +68,25 @@ public class Prairie extends Observable{
         }
     }
 
-    public Runnable miseAJour = () -> {
-        for (Lapin lapin : lapins) {
-            lapin.miseAJourDirection();
-            lapin.miseAJourPosition();
-        }
-        for (Renard renard : renards) {
-            renard.miseAJourDirection(lapins);
-            renard.miseAJourPosition();
-        }
+    protected Runnable miseAJour = () -> {
+        synchronized (this) {
+            for (Lapin lapin : lapins) {
+                lapin.miseAJourDirection();
+                lapin.miseAJourPosition();
+            }
+            for (Renard renard : renards) {
+                renard.miseAJourDirection(lapins);
+                renard.miseAJourPosition();
+            }
 
-        ParametresJPanel.getInstance().majCompteurs.run();
+            ParametresJPanel.getInstance().majCompteurs.run();
 
-        setChanged();
-        notifyObservers();
+            setChanged();
+            notifyObservers();
+        }
     };
 
-    public void mangerLapin(Lapin lapin) {
-        lapins.remove(lapin);
-    }
-
-    public Runnable apparitionAnimaux = () -> {
+    protected Runnable apparitionAnimaux = () -> {
         int nbNouveauxLapins = 10;
         int nbNouveauxRenards = nbNouveauxLapins/10;
         for (int i = 0; i < nbNouveauxLapins; i++) {

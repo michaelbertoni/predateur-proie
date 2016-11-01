@@ -10,14 +10,15 @@ import java.util.concurrent.TimeUnit;
  */
 public class Renard extends Animal {
     // Paramètres
-    protected static double PROBA_CHGT_DIRECTION = 0.05;
+    private static double PROBA_CHGT_DIRECTION = 0.05;
+    private static double PORTEE_PROIE_CARRE = 100;
 
     // Attributs
-    protected boolean proie;
-    protected ScheduledFuture<?> mortDeFaim;
+    private boolean proieEnVue;
+    private ScheduledFuture<?> mortDeFaim;
 
     // Méthodes
-    public Renard(double _posX, double _posY) {
+    protected Renard(double _posX, double _posY) {
         PAS = 3;
         posX = _posX;
         posY = _posY;
@@ -25,12 +26,6 @@ public class Renard extends Animal {
         vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
         mortDeFaim = Prairie.getInstance().executor.schedule(deceder, Prairie.DUREE_VIE_RENARD, TimeUnit.SECONDS);
         normaliser();
-    }
-
-    protected void normaliser() {
-        double longueur = Math.sqrt(vitesseX * vitesseX + vitesseY * vitesseY);
-        vitesseX /= longueur;
-        vitesseY /= longueur;
     }
 
     protected void miseAJourDirection(ArrayList<Lapin> lapins) {
@@ -50,29 +45,33 @@ public class Renard extends Animal {
                 vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
                 vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
             }
-            if (proie && but == null) {
-                proie = false;
+            if (proieEnVue) {
+                proieEnVue = false;
             }
         } else {
             // on se dirigie vers le lapin
             vitesseX = but.posX - posX;
             vitesseY = but.posY - posY;
 
-            if (DistanceCarre(but) < PAS) {
+            if (DistanceCarre(but) <= PORTEE_PROIE_CARRE) {
                 // lapin à portée
-                Prairie.getInstance().mangerLapin(but);
+                mangerLapin(but);
                 mortDeFaim.cancel(true);
                 mortDeFaim = Prairie.getInstance().executor.schedule(deceder, Prairie.DUREE_VIE_RENARD, TimeUnit.SECONDS);
-                proie = false;
+                proieEnVue = false;
             } else {
-                proie = true;
+                proieEnVue = true;
             }
         }
         normaliser();
     }
 
-    public Runnable deceder = () -> {
+    private Runnable deceder = () -> {
         Prairie.getInstance().renards.remove(this);
         System.out.println("Un renard est décédé !");
     };
+
+    private void mangerLapin(Lapin lapin) {
+        Prairie.getInstance().lapins.remove(lapin);
+    }
 }
