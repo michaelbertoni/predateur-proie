@@ -28,6 +28,12 @@ public class Lapin extends Animal {
 
         if(repereParRenard.isEmpty()) {
             PAS = 3;
+            // Changement de direction aléatoire
+            if (Prairie.getInstance().generateur.nextDouble() < PROB_CHGT_DIRECTION) {
+                vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
+                vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
+                normaliser();
+            }
         } else {
             // accélérer !
             PAS = 6;
@@ -36,13 +42,6 @@ public class Lapin extends Animal {
             vitesseX = repereParRenard.get(0).posX + posX;
             vitesseY = repereParRenard.get(0).posY + posY;
 
-            normaliser();
-        }
-
-
-        if (Prairie.getInstance().generateur.nextDouble() < PROB_CHGT_DIRECTION) {
-            vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
-            vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
             normaliser();
         }
     }
