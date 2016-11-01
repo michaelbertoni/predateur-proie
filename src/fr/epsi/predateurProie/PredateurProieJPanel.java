@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class PredateurProieJPanel extends JPanel implements Observer, MouseListener {
     private static PredateurProieJPanel instance;
 
-    public static PredateurProieJPanel getInstance() {
+    protected static PredateurProieJPanel getInstance() {
         if (instance == null) {
             try {
                 instance = new PredateurProieJPanel();
@@ -29,39 +29,41 @@ public class PredateurProieJPanel extends JPanel implements Observer, MouseListe
         return instance;
     }
 
-    protected Prairie prairie;
+    private Prairie prairie;
     private final BufferedImage imageRenard = ImageIO.read(this.getClass().getResource("/img/fox.png"));
     private final BufferedImage imageLapin = ImageIO.read(this.getClass().getResource("/img/rabbit.png"));
 
-    public PredateurProieJPanel() throws IOException {
+    private PredateurProieJPanel() throws IOException {
         this.setPreferredSize(new Dimension(400,400));
         this.setBackground(Color.white);
     }
 
-    public void lancer() {
+    protected void lancer() {
         prairie = Prairie.getInstance();
         prairie.initialiser(prairie.NOMBRE_LAPINS_INITIAL, prairie.NOMBRE_RENARDS_INITIAL, getWidth(), getHeight());
         prairie.addObserver(this);
-        prairie.executor.scheduleAtFixedRate(prairie.miseAJour, 0, 45, TimeUnit.MILLISECONDS);
+        prairie.executor.scheduleAtFixedRate(prairie.miseAJour, 0, 30, TimeUnit.MILLISECONDS);
         prairie.frequenceApparitionAnimauxSchedule = prairie.executor.scheduleAtFixedRate(prairie.apparitionAnimaux, 0, prairie.FREQUENCE_APPARITION_ANIMAUX_SECONDES, TimeUnit.SECONDS);
     }
 
-    public void dessignerLapin(Lapin lapin, Graphics g) {
+    private void dessignerLapin(Lapin lapin, Graphics g) {
         g.drawImage(imageLapin, (int) lapin.posX -1, (int) lapin.posY -1, 20, 20, null);
     }
 
-    public void dessignerRenard(Renard renard, Graphics g) {
+    private void dessignerRenard(Renard renard, Graphics g) {
         g.drawImage(imageRenard, (int) renard.posX -1, (int) renard.posY -1, 20, 20, null);
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        for (Lapin lapin : prairie.lapins) {
-            dessignerLapin(lapin, g);
-        }
-        for (Renard renard : prairie.renards) {
-            dessignerRenard(renard, g);
+        synchronized (this) {
+            super.paintComponent(g);
+            for (Lapin lapin : prairie.lapins) {
+                dessignerLapin(lapin, g);
+            }
+            for (Renard renard : prairie.renards) {
+                dessignerRenard(renard, g);
+            }
         }
     }
 
