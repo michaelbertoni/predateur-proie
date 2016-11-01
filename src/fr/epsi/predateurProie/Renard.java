@@ -73,5 +73,6 @@ public class Renard extends Animal {
 
     private void mangerLapin(Lapin lapin) {
         Prairie.getInstance().lapins.remove(lapin);
+        System.out.println("Un lapin s'est fait manger !");
     }
 }

@@ -56,10 +56,12 @@ public class PredateurProieJPanel extends JPanel implements Observer, MouseListe
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for (Lapin lapin : prairie.lapins) {
+        for (int i = 0; i < prairie.lapins.size(); i++) {
+            Lapin lapin = prairie.lapins.get(i);
             dessignerLapin(lapin, g);
         }
-        for (Renard renard : prairie.renards) {
+        for (int i = 0; i < prairie.renards.size(); i++) {
+            Renard renard = prairie.renards.get(i);
             dessignerRenard(renard, g);
         }
     }
