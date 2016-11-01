@@ -14,7 +14,7 @@ public class Renard extends Animal {
     private static double PORTEE_PROIE_CARRE = 100;
 
     // Attributs
-    private boolean proieEnVue;
+    protected Lapin proie;
     private ScheduledFuture<?> mortDeFaim;
 
     // Méthodes
@@ -45,8 +45,8 @@ public class Renard extends Animal {
                 vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
                 vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
             }
-            if (proieEnVue) {
-                proieEnVue = false;
+            if (proie != null) {
+                proie = null;
             }
         } else {
             // on se dirigie vers le lapin
@@ -58,9 +58,9 @@ public class Renard extends Animal {
                 mangerLapin(but);
                 mortDeFaim.cancel(true);
                 mortDeFaim = Prairie.getInstance().executor.schedule(deceder, Prairie.DUREE_VIE_RENARD, TimeUnit.SECONDS);
-                proieEnVue = false;
+                proie = null;
             } else {
-                proieEnVue = true;
+                proie = but;
             }
         }
         normaliser();
