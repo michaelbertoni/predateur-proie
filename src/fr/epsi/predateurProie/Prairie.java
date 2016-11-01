@@ -71,7 +71,7 @@ public class Prairie extends Observable{
     protected Runnable miseAJour = () -> {
         synchronized (this) {
             for (Lapin lapin : lapins) {
-                lapin.miseAJourDirection();
+                lapin.miseAJourDirection(renards);
                 lapin.miseAJourPosition();
             }
             for (Renard renard : renards) {
