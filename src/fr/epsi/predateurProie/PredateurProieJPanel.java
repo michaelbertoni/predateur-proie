@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.TimeUnit;
@@ -30,8 +29,8 @@ public class PredateurProieJPanel extends JPanel implements Observer, MouseListe
     }
 
     private Prairie prairie;
-    private final BufferedImage imageRenard = ImageIO.read(this.getClass().getResource("/img/fox.png"));
-    private final BufferedImage imageLapin = ImageIO.read(this.getClass().getResource("/img/rabbit.png"));
+    private final BufferedImage imageRenard = ImageIO.read(this.getClass().getResource("img/fox.png"));
+    private final BufferedImage imageLapin = ImageIO.read(this.getClass().getResource("img/rabbit.png"));
 
     private PredateurProieJPanel() throws IOException {
         this.setPreferredSize(new Dimension(400,400));
@@ -56,14 +55,12 @@ public class PredateurProieJPanel extends JPanel implements Observer, MouseListe
 
     @Override
     public void paintComponent(Graphics g) {
-        synchronized (this) {
-            super.paintComponent(g);
-            for (Lapin lapin : prairie.lapins) {
-                dessignerLapin(lapin, g);
-            }
-            for (Renard renard : prairie.renards) {
-                dessignerRenard(renard, g);
-            }
+        super.paintComponent(g);
+        for (Lapin lapin : prairie.lapins) {
+            dessignerLapin(lapin, g);
+        }
+        for (Renard renard : prairie.renards) {
+            dessignerRenard(renard, g);
         }
     }
 
@@ -80,5 +77,6 @@ public class PredateurProieJPanel extends JPanel implements Observer, MouseListe
     @Override
     public void update(Observable o, Object arg) {
         this.repaint();
+        this.getToolkit().sync();
     }
 }
