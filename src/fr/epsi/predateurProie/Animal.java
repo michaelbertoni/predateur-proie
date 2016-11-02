@@ -4,6 +4,9 @@ package fr.epsi.predateurProie;
  * Created by Michael on 31/10/2016.
  */
 public class Animal {
+	// Constantes
+    private final static double PROB_CHGT_DIRECTION = 0.05;
+	
     protected double posX;
     protected double posY;
     protected double PAS;
@@ -43,5 +46,22 @@ public class Animal {
         else if (posY > hauteur) {
             posY = hauteur;
         }
+    }
+    
+    protected void changementDirectionAleatoire() {
+    	// Changement de direction aléatoire
+        if (Prairie.getInstance().generateur.nextDouble() < PROB_CHGT_DIRECTION) {
+            vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
+            vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
+        }
+        // change la direction du renard s'il arrive sur un bord du panel
+        if( posY == 0
+        		|| posX == 0 
+        		|| posX >= PredateurProieJPanel.getInstance().getWidth() - 20
+        		|| posY >= PredateurProieJPanel.getInstance().getHeight() - 20) {
+        	vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
+            vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
+        }
+        normaliser();
     }
 }

@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class Renard extends Animal {
     // Paramètres
-    private static double PROBA_CHGT_DIRECTION = 0.05;
     private static double PORTEE_PROIE_CARRE = 100;
 
     // Attributs
@@ -42,10 +41,7 @@ public class Renard extends Animal {
         // avons nous un but ?
         if (but == null) {
         	PAS = 2;
-            if (Prairie.getInstance().generateur.nextDouble() < PROBA_CHGT_DIRECTION) {
-                vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
-                vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
-            }
+        	changementDirectionAleatoire();
             if (proie != null) {
                 proie = null;
             }
