@@ -50,8 +50,8 @@ public class Renard extends Animal {
             }
         } else {
             // on se dirigie vers le lapin
-            vitesseX = but.posX - posX + 1;
-            vitesseY = but.posY - posY + 1;
+            vitesseX = but.posX - posX + 0.001;
+            vitesseY = but.posY - posY + 0.001;
 
             if (DistanceCarre(but) <= PORTEE_PROIE_CARRE) {
                 // lapin à portée
