@@ -29,11 +29,11 @@ public class Prairie extends Observable{
     protected static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     // PARAMETRES DE L'APPLICATION
-    public static long FREQUENCE_APPARITION_ANIMAUX_SECONDES = 3;
+    public static long FREQUENCE_APPARITION_ANIMAUX_MS = 1000;
     public static int NOMBRE_LAPINS_INITIAL = 15;
-    public static int NOMBRE_RENARDS_INITIAL = 5;
+    public static int NOMBRE_RENARDS_INITIAL = 10;
     public static double DISTANCE_VISIBILITE_RENARD = 1000;
-    public static int DUREE_VIE_RENARD = 10;
+    public static int DUREE_VIE_RENARD = 30;
 
     // Attributs
     protected Random generateur;
@@ -42,6 +42,8 @@ public class Prairie extends Observable{
     protected ArrayList<Lapin> lapins;
     protected ArrayList<Renard> renards;
     protected ScheduledFuture frequenceApparitionAnimauxSchedule;
+    protected ScheduledFuture frequenceApparitionLapin;
+    protected ScheduledFuture frequenceApparitionRenard;
 
     // Méthodes
     private Prairie() {
@@ -96,4 +98,15 @@ public class Prairie extends Observable{
             renards.add(renard);
         }
     };
+    
+    protected Runnable apparitionLapin = () -> {
+        Lapin lapin = new Lapin(generateur.nextDouble() * largeur, generateur.nextDouble() * hauteur);
+        lapins.add(lapin);
+    };
+    
+    protected Runnable apparitionRenard = () -> {
+    	Renard renard = new Renard(generateur.nextDouble() * largeur, generateur.nextDouble() * hauteur);
+        renards.add(renard);
+    };
+    
 }
