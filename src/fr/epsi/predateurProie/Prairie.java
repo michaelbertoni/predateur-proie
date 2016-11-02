@@ -54,8 +54,8 @@ public class Prairie extends Observable{
     protected double getHauteur() { return hauteur; }
 
     protected void initialiser(int _nbLapins, int _nbRenards, double _largeur, double _hauteur) {
-        largeur = _largeur;
-        hauteur = _hauteur;
+        largeur = _largeur - 18;
+        hauteur = _hauteur - 20;
         lapins.clear();
         for (int i = 0; i < _nbLapins; i++) {
             Lapin lapin = new Lapin(generateur.nextDouble() * largeur, generateur.nextDouble() * hauteur);
@@ -69,21 +69,19 @@ public class Prairie extends Observable{
     }
 
     protected Runnable miseAJour = () -> {
-        synchronized (this) {
-            for (Lapin lapin : lapins) {
-                lapin.miseAJourDirection(renards);
-                lapin.miseAJourPosition();
-            }
-            for (Renard renard : renards) {
-                renard.miseAJourDirection(lapins);
-                renard.miseAJourPosition();
-            }
-
-            ParametresJPanel.getInstance().majCompteurs.run();
-
-            setChanged();
-            notifyObservers();
+        for (Lapin lapin : lapins) {
+            lapin.miseAJourDirection(renards);
+            lapin.miseAJourPosition();
         }
+        for (Renard renard : renards) {
+            renard.miseAJourDirection(lapins);
+            renard.miseAJourPosition();
+        }
+
+        ParametresJPanel.getInstance().majCompteurs.run();
+
+        setChanged();
+        notifyObservers();
     };
 
     protected Runnable apparitionAnimaux = () -> {
