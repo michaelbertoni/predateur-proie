@@ -12,7 +12,7 @@ public class Lapin extends Animal {
 
     // Méthodes
     protected Lapin(double _posX, double _posY) {
-        PAS = 3;
+        PAS = 2;
         posX = _posX;
         posY = _posY;
         vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
@@ -24,10 +24,10 @@ public class Lapin extends Animal {
         ArrayList<Renard> repereParRenard = new ArrayList<>();
         repereParRenard.addAll(renards);
         repereParRenard.removeIf(d -> d.proie != this);
-        Collections.sort(repereParRenard, (Renard r1, Renard r2) -> (Distance(r1) < Distance(r2) ? -1 : 1));
+        Collections.sort(repereParRenard, (Renard r1, Renard r2) -> (DistanceCarre(r1) < DistanceCarre(r2) ? -1 : 1));
 
         if(repereParRenard.isEmpty()) {
-            PAS = 3;
+            PAS = 2;
             // Changement de direction aléatoire
             if (Prairie.getInstance().generateur.nextDouble() < PROB_CHGT_DIRECTION) {
                 vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
@@ -36,11 +36,11 @@ public class Lapin extends Animal {
             }
         } else {
             // accélérer !
-            PAS = 6;
+            PAS = 4;
 
             // fuir le renard le plus proche
-            vitesseX = repereParRenard.get(0).posX + posX;
-            vitesseY = repereParRenard.get(0).posY + posY;
+            vitesseX = repereParRenard.get(0).posX + posX + 1;
+            vitesseY = repereParRenard.get(0).posY + posY + 1;
 
             normaliser();
         }

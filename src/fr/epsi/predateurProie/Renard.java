@@ -19,7 +19,7 @@ public class Renard extends Animal {
 
     // Méthodes
     protected Renard(double _posX, double _posY) {
-        PAS = 3;
+        PAS = 2;
         posX = _posX;
         posY = _posY;
         vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
@@ -32,7 +32,7 @@ public class Renard extends Animal {
         ArrayList<Lapin> dansZone = new ArrayList<>();
         dansZone.addAll(lapins);
         dansZone.removeIf(d -> DistanceCarre(d) > Prairie.DISTANCE_VISIBILITE_RENARD);
-        Collections.sort(dansZone, (Lapin l1, Lapin l2) -> (Distance(l1) < Distance(l2) ? -1 : 1));
+        Collections.sort(dansZone, (Lapin l1, Lapin l2) -> (DistanceCarre(l1) < DistanceCarre(l2) ? -1 : 1));
         Lapin but = null;
         // définition du but
         if (!dansZone.isEmpty()) {
@@ -50,8 +50,8 @@ public class Renard extends Animal {
             }
         } else {
             // on se dirigie vers le lapin
-            vitesseX = but.posX - posX;
-            vitesseY = but.posY - posY;
+            vitesseX = but.posX - posX + 1;
+            vitesseY = but.posY - posY + 1;
 
             if (DistanceCarre(but) <= PORTEE_PROIE_CARRE) {
                 // lapin à portée
