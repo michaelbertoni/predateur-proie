@@ -41,8 +41,8 @@ public class PredateurProieJPanel extends JPanel implements Observer, MouseListe
         prairie = Prairie.getInstance();
         prairie.initialiser(prairie.NOMBRE_LAPINS_INITIAL, prairie.NOMBRE_RENARDS_INITIAL, getWidth(), getHeight());
         prairie.addObserver(this);
-        prairie.executor.scheduleAtFixedRate(prairie.miseAJour, 0, 30, TimeUnit.MILLISECONDS);
-        prairie.frequenceApparitionAnimauxSchedule = prairie.executor.scheduleAtFixedRate(prairie.apparitionAnimaux, 0, prairie.FREQUENCE_APPARITION_ANIMAUX_SECONDES, TimeUnit.SECONDS);
+        prairie.executor.scheduleAtFixedRate(prairie.miseAJour, 0, 25, TimeUnit.MILLISECONDS);
+        prairie.frequenceApparitionAnimauxSchedule = prairie.executor.scheduleAtFixedRate(prairie.apparitionAnimaux, prairie.FREQUENCE_APPARITION_ANIMAUX_SECONDES, prairie.FREQUENCE_APPARITION_ANIMAUX_SECONDES, TimeUnit.SECONDS);
     }
 
     private void dessignerLapin(Lapin lapin, Graphics g) {
