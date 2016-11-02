@@ -77,8 +77,8 @@ public class ParametresJPanel extends JPanel {
     }
 
     private void frequenceApparitionTField() {
-        frequenceApparitionTField = new JTextField(String.valueOf(Prairie.FREQUENCE_APPARITION_ANIMAUX_SECONDES));
-        JLabel frequenceApparitionLab = new JLabel("<html>Fréq.<br>apparition (s)</html>");
+        frequenceApparitionTField = new JTextField(String.valueOf(Prairie.FREQUENCE_APPARITION_ANIMAUX_MS));
+        JLabel frequenceApparitionLab = new JLabel("<html>Fréq.<br>apparition (ms)</html>");
         frequenceApparitionLab.setLabelFor(frequenceApparitionTField);
         labelInputPanel.add(frequenceApparitionLab);
         fieldPanel.add(frequenceApparitionTField);
@@ -117,9 +117,12 @@ public class ParametresJPanel extends JPanel {
     }
 
     private Runnable majParametres = () -> {
-        Prairie.FREQUENCE_APPARITION_ANIMAUX_SECONDES = Long.valueOf(frequenceApparitionTField.getText());
-        Prairie.getInstance().frequenceApparitionAnimauxSchedule.cancel(true);
-        Prairie.getInstance().frequenceApparitionAnimauxSchedule = Prairie.executor.scheduleAtFixedRate(Prairie.getInstance().apparitionAnimaux, Prairie.FREQUENCE_APPARITION_ANIMAUX_SECONDES, Prairie.FREQUENCE_APPARITION_ANIMAUX_SECONDES, TimeUnit.SECONDS);
+        Prairie.FREQUENCE_APPARITION_ANIMAUX_MS = Long.valueOf(frequenceApparitionTField.getText());
+        Prairie.getInstance().frequenceApparitionLapin.cancel(true);
+        Prairie.getInstance().frequenceApparitionLapin = Prairie.executor.scheduleAtFixedRate(Prairie.getInstance().apparitionLapin, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS, TimeUnit.MILLISECONDS);
+        Prairie.getInstance().frequenceApparitionRenard.cancel(true);
+        Prairie.getInstance().frequenceApparitionRenard = Prairie.executor.scheduleAtFixedRate(Prairie.getInstance().apparitionRenard, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, TimeUnit.MILLISECONDS);
+
         Prairie.DISTANCE_VISIBILITE_RENARD = Double.valueOf(distanceVisibiliteRenardTField.getText());
         Prairie.DUREE_VIE_RENARD = Integer.valueOf(dureeVieRenardTField.getText());
         Prairie.NOMBRE_LAPINS_INITIAL = Integer.valueOf(nombreLapinsInitialTField.getText());

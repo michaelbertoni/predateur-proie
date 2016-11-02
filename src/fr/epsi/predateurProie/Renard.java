@@ -41,6 +41,7 @@ public class Renard extends Animal {
 
         // avons nous un but ?
         if (but == null) {
+        	PAS = 2;
             if (Prairie.getInstance().generateur.nextDouble() < PROBA_CHGT_DIRECTION) {
                 vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
                 vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
@@ -49,6 +50,7 @@ public class Renard extends Animal {
                 proie = null;
             }
         } else {
+        	PAS = 3;
             // on se dirigie vers le lapin
             vitesseX = but.posX - posX + 0.001;
             vitesseY = but.posY - posY + 0.001;
