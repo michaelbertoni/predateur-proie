@@ -39,11 +39,11 @@ public class PredateurProieJPanel extends JPanel implements Observer, MouseListe
 
     protected void lancer() {
         prairie = Prairie.getInstance();
-        prairie.initialiser(prairie.NOMBRE_LAPINS_INITIAL, prairie.NOMBRE_RENARDS_INITIAL, getWidth(), getHeight());
+        prairie.initialiser(Prairie.NOMBRE_LAPINS_INITIAL, Prairie.NOMBRE_RENARDS_INITIAL, getWidth(), getHeight());
         prairie.addObserver(this);
-        prairie.executor.scheduleAtFixedRate(prairie.miseAJour, 0, 25, TimeUnit.MILLISECONDS);
-        prairie.frequenceApparitionLapin = prairie.executor.scheduleAtFixedRate(prairie.apparitionLapin, prairie.FREQUENCE_APPARITION_ANIMAUX_MS, prairie.FREQUENCE_APPARITION_ANIMAUX_MS, TimeUnit.MILLISECONDS);
-        prairie.frequenceApparitionRenard = prairie.executor.scheduleAtFixedRate(prairie.apparitionRenard, prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, TimeUnit.MILLISECONDS);
+        Prairie.executor.scheduleAtFixedRate(prairie.miseAJour, 0, 25, TimeUnit.MILLISECONDS);
+        prairie.frequenceApparitionLapin = Prairie.executor.scheduleAtFixedRate(prairie.apparitionLapin, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS, TimeUnit.MILLISECONDS);
+        prairie.frequenceApparitionRenard = Prairie.executor.scheduleAtFixedRate(prairie.apparitionRenard, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, TimeUnit.MILLISECONDS);
     }
 
     private void dessignerLapin(Lapin lapin, Graphics g) {

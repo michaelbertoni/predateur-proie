@@ -41,7 +41,6 @@ public class Prairie extends Observable{
     private double hauteur;
     protected ArrayList<Lapin> lapins;
     protected ArrayList<Renard> renards;
-    protected ScheduledFuture frequenceApparitionAnimauxSchedule;
     protected ScheduledFuture frequenceApparitionLapin;
     protected ScheduledFuture frequenceApparitionRenard;
 
@@ -56,17 +55,15 @@ public class Prairie extends Observable{
     protected double getHauteur() { return hauteur; }
 
     protected void initialiser(int _nbLapins, int _nbRenards, double _largeur, double _hauteur) {
-        largeur = _largeur - 18;
+        largeur = _largeur - 20;
         hauteur = _hauteur - 20;
         lapins.clear();
         for (int i = 0; i < _nbLapins; i++) {
-            Lapin lapin = new Lapin(generateur.nextDouble() * largeur, generateur.nextDouble() * hauteur);
-            lapins.add(lapin);
+        	apparitionLapin.run();
         }
         renards.clear();
         for (int i = 0; i < _nbRenards; i++) {
-            Renard renard = new Renard(generateur.nextDouble() * largeur, generateur.nextDouble() * hauteur);
-            renards.add(renard);
+            apparitionRenard.run();
         }
     }
 
@@ -84,19 +81,6 @@ public class Prairie extends Observable{
 
         setChanged();
         notifyObservers();
-    };
-
-    protected Runnable apparitionAnimaux = () -> {
-        int nbNouveauxLapins = 10;
-        int nbNouveauxRenards = nbNouveauxLapins/10;
-        for (int i = 0; i < nbNouveauxLapins; i++) {
-            Lapin lapin = new Lapin(generateur.nextDouble() * largeur, generateur.nextDouble() * hauteur);
-            lapins.add(lapin);
-        }
-        for (int i = 0; i < nbNouveauxRenards; i++) {
-            Renard renard = new Renard(generateur.nextDouble() * largeur, generateur.nextDouble() * hauteur);
-            renards.add(renard);
-        }
     };
     
     protected Runnable apparitionLapin = () -> {

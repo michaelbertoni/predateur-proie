@@ -7,8 +7,6 @@ import java.util.Collections;
  * Created by Michael on 31/10/2016.
  */
 public class Lapin extends Animal {
-    // Constantes
-    private final static double PROB_CHGT_DIRECTION = 0.05;
 
     // Méthodes
     protected Lapin(double _posX, double _posY) {
@@ -28,12 +26,7 @@ public class Lapin extends Animal {
 
         if(repereParRenard.isEmpty()) {
             PAS = 2;
-            // Changement de direction aléatoire
-            if (Prairie.getInstance().generateur.nextDouble() < PROB_CHGT_DIRECTION) {
-                vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
-                vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
-                normaliser();
-            }
+            changementDirectionAleatoire();
         } else {
             // accélérer !
             PAS = 4;
