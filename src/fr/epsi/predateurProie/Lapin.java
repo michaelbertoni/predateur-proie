@@ -38,9 +38,9 @@ public class Lapin extends Animal {
             // accélérer !
             PAS = 4;
 
-            // fuir le renard le plus proche
-            vitesseX = repereParRenard.get(0).posX + posX + 1;
-            vitesseY = repereParRenard.get(0).posY + posY + 1;
+            // fuir le renard le plus proche (prend la même direction que le renard)
+            vitesseX = repereParRenard.get(0).vitesseX;
+            vitesseY = repereParRenard.get(0).vitesseY;
 
             normaliser();
         }
