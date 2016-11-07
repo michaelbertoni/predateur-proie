@@ -11,7 +11,7 @@ public class Application {
     public static void main(String[] args) {
         // Création de la fenêtre
         JFrame fenetre = new JFrame();
-        fenetre.setTitle("Proie - Prédateur");
+        fenetre.setTitle("Prédateur vs Proie !");
         fenetre.setSize(600, 400);
         fenetre.setLocationRelativeTo(null);
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
