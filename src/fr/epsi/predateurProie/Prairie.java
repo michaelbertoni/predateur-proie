@@ -1,5 +1,6 @@
 package fr.epsi.predateurProie;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;
@@ -10,8 +11,13 @@ import java.util.concurrent.ScheduledFuture;
 /**
  * Created by Michael on 31/10/2016.
  */
-public class Prairie extends Observable{
-    // Gestion du singleton
+public class Prairie extends Observable implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6200576317860379515L;
+
+	// Gestion du singleton
     private static Prairie instance;
 
     public static Prairie getInstance() {
@@ -19,10 +25,6 @@ public class Prairie extends Observable{
             instance = new Prairie();
         }
         return instance;
-    }
-
-    public static Prairie getNewInstance() {
-        return instance = new Prairie();
     }
 
     // Timer de l'application (Singleton)
@@ -41,13 +43,24 @@ public class Prairie extends Observable{
     private double hauteur;
     protected ArrayList<Lapin> lapins;
     protected ArrayList<Renard> renards;
-    protected ScheduledFuture frequenceApparitionLapin;
-    protected ScheduledFuture frequenceApparitionRenard;
+    protected ArrayList<Terrier> terriers;
+    protected ScheduledFuture<?> frequenceApparitionLapin;
+    protected ScheduledFuture<?> frequenceApparitionRenard;
+    
+
+    public void reinitialiserPrairie() {
+        terriers.clear();
+        frequenceApparitionLapin.cancel(true);
+        frequenceApparitionRenard.cancel(true);
+        executor.shutdown();
+        executor = Executors.newSingleThreadScheduledExecutor();
+    }
 
     // Méthodes
     private Prairie() {
         lapins = new ArrayList<>();
         renards = new ArrayList<>();
+        terriers = new ArrayList<>();
         generateur = new Random();
     }
 
@@ -69,7 +82,7 @@ public class Prairie extends Observable{
 
     protected Runnable miseAJour = () -> {
         for (Lapin lapin : lapins) {
-            lapin.miseAJourDirection(renards);
+            lapin.miseAJourDirection(renards, terriers);
             lapin.miseAJourPosition();
         }
         for (Renard renard : renards) {
@@ -92,5 +105,9 @@ public class Prairie extends Observable{
     	Renard renard = new Renard(generateur.nextDouble() * largeur, generateur.nextDouble() * hauteur);
         renards.add(renard);
     };
+    
+    protected void creerTerrier(Double posX, Double posY) {
+    	this.terriers.add(new Terrier(posX, posY));
+    }
     
 }
