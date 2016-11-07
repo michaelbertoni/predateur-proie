@@ -33,6 +33,7 @@ public class ParametresJPanel extends JPanel {
 
     protected ParametresJPanel() {
         super(new BorderLayout());
+        this.setPreferredSize(new Dimension(200,400));
         this.setBackground(Color.LIGHT_GRAY);
 
         labelCompteursPanel = new JPanel(new GridLayout(2, 1));
@@ -85,8 +86,8 @@ public class ParametresJPanel extends JPanel {
     }
 
     private void distanceVisibiliteRenardTField() {
-        distanceVisibiliteRenardTField = new JTextField(String.valueOf(Prairie.DISTANCE_VISIBILITE_RENARD));
-        JLabel distanceVisibiliteRenardLab = new JLabel("<html>Distance visibilité<br>renards (px, au carré)</html>");
+        distanceVisibiliteRenardTField = new JTextField(String.valueOf(Math.sqrt(Prairie.DISTANCE_VISIBILITE_RENARD)));
+        JLabel distanceVisibiliteRenardLab = new JLabel("<html>Distance visibilité<br>renards (px)</html>");
         distanceVisibiliteRenardLab.setLabelFor(distanceVisibiliteRenardTField);
         labelInputPanel.add(distanceVisibiliteRenardLab);
         fieldPanel.add(distanceVisibiliteRenardTField);
@@ -94,7 +95,7 @@ public class ParametresJPanel extends JPanel {
 
     private void dureeVieRenardTField() {
         dureeVieRenardTField = new JTextField(String.valueOf(Prairie.DUREE_VIE_RENARD));
-        JLabel dureeVieRenardLab = new JLabel("<html>Espérance de vie renards<br>sans manger (s)</html>");
+        JLabel dureeVieRenardLab = new JLabel("<html>Espérance vie renards<br>sans manger (s)</html>");
         dureeVieRenardLab.setLabelFor(dureeVieRenardTField);
         labelInputPanel.add(dureeVieRenardLab);
         fieldPanel.add(dureeVieRenardTField);
@@ -123,7 +124,8 @@ public class ParametresJPanel extends JPanel {
         Prairie.getInstance().frequenceApparitionRenard.cancel(true);
         Prairie.getInstance().frequenceApparitionRenard = Prairie.executor.scheduleAtFixedRate(Prairie.getInstance().apparitionRenard, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, TimeUnit.MILLISECONDS);
 
-        Prairie.DISTANCE_VISIBILITE_RENARD = Double.valueOf(distanceVisibiliteRenardTField.getText());
+        Double distance = Double.valueOf(distanceVisibiliteRenardTField.getText());
+        Prairie.DISTANCE_VISIBILITE_RENARD = distance*distance;
         Prairie.DUREE_VIE_RENARD = Integer.valueOf(dureeVieRenardTField.getText());
         Prairie.NOMBRE_LAPINS_INITIAL = Integer.valueOf(nombreLapinsInitialTField.getText());
         Prairie.NOMBRE_RENARDS_INITIAL = Integer.valueOf(nombreRenardsInitialTField.getText());

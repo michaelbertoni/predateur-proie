@@ -32,7 +32,7 @@ public class Prairie extends Observable{
     public static long FREQUENCE_APPARITION_ANIMAUX_MS = 1000;
     public static int NOMBRE_LAPINS_INITIAL = 15;
     public static int NOMBRE_RENARDS_INITIAL = 10;
-    public static double DISTANCE_VISIBILITE_RENARD = 1000;
+    public static double DISTANCE_VISIBILITE_RENARD = 900;
     public static int DUREE_VIE_RENARD = 30;
 
     // Attributs

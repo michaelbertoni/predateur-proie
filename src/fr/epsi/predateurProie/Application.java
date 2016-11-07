@@ -1,7 +1,5 @@
 package fr.epsi.predateurProie;
 
-import java.awt.FlowLayout;
-
 import javax.swing.*;
 
 /**
