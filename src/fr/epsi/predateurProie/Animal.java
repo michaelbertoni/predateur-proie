@@ -1,11 +1,18 @@
 package fr.epsi.predateurProie;
 
+import java.io.Serializable;
+
 /**
  * Created by Michael on 31/10/2016.
  */
-public class Animal {
+public class Animal implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7216145130328458156L;
+
 	// Constantes
-    private final static double PROB_CHGT_DIRECTION = 0.05;
+    protected final static double PROB_CHGT_DIRECTION = 0.05;
 	
     protected double posX;
     protected double posY;
@@ -62,6 +69,5 @@ public class Animal {
         	vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
             vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
         }
-        normaliser();
     }
 }

@@ -9,8 +9,13 @@ import java.util.concurrent.TimeUnit;
  * Created by Michael on 31/10/2016.
  */
 public class Renard extends Animal {
-    // Paramètres
-    private static double PORTEE_PROIE_CARRE = 100;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5629879751875677151L;
+
+	// Paramètres
+    private static double PORTEE_MANGER_PROIE_CARRE = 100;
 
     // Attributs
     protected Lapin proie;
@@ -31,6 +36,7 @@ public class Renard extends Animal {
         ArrayList<Lapin> dansZone = new ArrayList<>();
         dansZone.addAll(lapins);
         dansZone.removeIf(d -> DistanceCarre(d) > Prairie.DISTANCE_VISIBILITE_RENARD);
+        dansZone.removeIf(d -> d.cache == true);
         Collections.sort(dansZone, (Lapin l1, Lapin l2) -> (DistanceCarre(l1) < DistanceCarre(l2) ? -1 : 1));
         Lapin but = null;
         // définition du but
@@ -47,11 +53,11 @@ public class Renard extends Animal {
             }
         } else {
         	PAS = 3;
-            // on se dirigie vers le lapin
+        	// on se dirigie vers le lapin
             vitesseX = but.posX - posX + 0.001;
             vitesseY = but.posY - posY + 0.001;
 
-            if (DistanceCarre(but) <= PORTEE_PROIE_CARRE) {
+            if (DistanceCarre(but) <= PORTEE_MANGER_PROIE_CARRE) {
                 // lapin à portée
                 mangerLapin(but);
                 mortDeFaim.cancel(true);

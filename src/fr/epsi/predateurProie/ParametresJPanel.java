@@ -65,7 +65,7 @@ public class ParametresJPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 majParametres.run();
-                Prairie.getNewInstance();
+                Prairie.getInstance().reinitialiserPrairie();
                 PredateurProieJPanel.getInstance().lancer();
             }
         });
