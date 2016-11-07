@@ -1,5 +1,7 @@
 package fr.epsi.predateurProie;
 
+import java.awt.BorderLayout;
+
 import javax.swing.*;
 
 /**
@@ -16,13 +18,13 @@ public class Application {
         fenetre.setResizable(false);
         JPanel panel = new JPanel();
         fenetre.setContentPane(panel);
-        fenetre.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        fenetre.setLayout(new BorderLayout());
 
         // Création du contenu
         PredateurProieJPanel predateurProidPanel = PredateurProieJPanel.getInstance();
-        panel.add(predateurProidPanel);
-        ParametresJPanel parametrePanel = ParametresJPanel.getInstance();
-        panel.add(parametrePanel);
+        panel.add(predateurProidPanel, BorderLayout.CENTER);
+        SettingsJPanel parametrePanel = SettingsJPanel.getInstance();
+        panel.add(parametrePanel, BorderLayout.EAST);
 
         // Affichage
         fenetre.setVisible(true);

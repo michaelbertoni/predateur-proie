@@ -15,7 +15,14 @@ import java.util.concurrent.TimeUnit;
  * Created by Michael on 31/10/2016.
  */
 public class PredateurProieJPanel extends JPanel implements Observer, MouseListener {
-    private static PredateurProieJPanel instance;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6670365572011564482L;
+
+	private static PredateurProieJPanel instance;
+    
+    public static int RAFRAICHISSEMENT_PRAIRIE = 25;
 
     protected static PredateurProieJPanel getInstance() {
         if (instance == null) {
@@ -44,7 +51,7 @@ public class PredateurProieJPanel extends JPanel implements Observer, MouseListe
         prairie = Prairie.getInstance();
         prairie.initialiser(Prairie.NOMBRE_LAPINS_INITIAL, Prairie.NOMBRE_RENARDS_INITIAL, getWidth(), getHeight());
         prairie.addObserver(this);
-        Prairie.executor.scheduleAtFixedRate(prairie.miseAJour, 0, 25, TimeUnit.MILLISECONDS);
+        Prairie.executor.scheduleAtFixedRate(prairie.miseAJour, 0, RAFRAICHISSEMENT_PRAIRIE, TimeUnit.MILLISECONDS);
         prairie.frequenceApparitionLapin = Prairie.executor.scheduleAtFixedRate(prairie.apparitionLapin, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS, TimeUnit.MILLISECONDS);
         prairie.frequenceApparitionRenard = Prairie.executor.scheduleAtFixedRate(prairie.apparitionRenard, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, TimeUnit.MILLISECONDS);
     }

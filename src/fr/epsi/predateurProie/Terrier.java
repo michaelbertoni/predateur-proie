@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Terrier {
 	
 	protected final static double DISTANCE_LAPIN_ENTREE = 100;
-	protected final static double DISTANCE_LAPIN_VUE = 100000;
 	
 	protected double posX;
     protected double posY;
