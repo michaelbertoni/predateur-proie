@@ -1,9 +1,7 @@
 package fr.epsi.predateurProie;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
 /**
