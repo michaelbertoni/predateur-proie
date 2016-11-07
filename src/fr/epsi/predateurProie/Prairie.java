@@ -36,6 +36,8 @@ public class Prairie extends Observable implements Serializable {
     public static int NOMBRE_RENARDS_INITIAL = 10;
     public static double DISTANCE_VISIBILITE_RENARD = 900;
     public static int DUREE_VIE_RENARD = 30;
+    public static int DUREE_LAPIN_CACHE = 1;
+	public static double DISTANCE_LAPIN_VUE_TERRIER = 90000;
 
     // Attributs
     protected Random generateur;
@@ -90,7 +92,7 @@ public class Prairie extends Observable implements Serializable {
             renard.miseAJourPosition();
         }
 
-        ParametresJPanel.getInstance().majCompteurs.run();
+        SettingsJPanel.getInstance().majCompteurs.run();
 
         setChanged();
         notifyObservers();

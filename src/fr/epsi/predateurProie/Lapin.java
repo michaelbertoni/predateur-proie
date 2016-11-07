@@ -16,15 +16,15 @@ public class Lapin extends Animal {
 	 */
 	private static final long serialVersionUID = -8465454842358844430L;
 	
-	protected boolean cache;
+	protected boolean cache = false;
 	protected Terrier terrier;
+	protected int compteurTempsCache = 0;
 
     // Méthodes
     protected Lapin(double _posX, double _posY) {
         PAS = 2;
         posX = _posX;
         posY = _posY;
-        cache = false;
         vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
         vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
         normaliser();
@@ -45,25 +45,31 @@ public class Lapin extends Animal {
     	if (predateur == null) {
     		// pas chassé
     		
-    		// je suis caché ? si oui sortir du terrier
+    		// je suis caché ? si oui attendre quelques temps avant de sortir
     		if (cache == true) {
-    			sortirTerrier();
-    			cache = false;
+    			if (compteurTempsCache < Prairie.DUREE_LAPIN_CACHE*1000/PredateurProieJPanel.RAFRAICHISSEMENT_PRAIRIE) {
+    				compteurTempsCache++;
+    			} else {
+    				sortirTerrier();
+        			cache = false;
+        			compteurTempsCache = 0;
+    			}
+    			
     		} else {
+    			PAS = 2;
     			changementDirectionAleatoire();
+        		normaliser();
     		}
-    		PAS = 2;
-    		normaliser();
     	} else {
     		// oui, chassé. je suis caché ?
-    		if (cache != true) {
+    		if (cache == false) {
 	    		// non, chassé, j'accélère
 	    		PAS = 4;
 	    		
 	    		// quels sont les terriers aux alentours, disponibles ?
 	    		List<Terrier> terriersDispos = new ArrayList<>();
 	    		terriersDispos = terriers.stream() //
-	    				.filter(t -> DistanceCarreTerrier(t) < Terrier.DISTANCE_LAPIN_VUE) //
+	    				.filter(t -> DistanceCarreTerrier(t) < Prairie.DISTANCE_LAPIN_VUE_TERRIER) //
 	    				.sorted((t1, t2) -> (DistanceCarreTerrier(t1) < DistanceCarreTerrier(t2) ? -1 : 1)) //
 	    				.collect(Collectors.toList());
 	    		Terrier but = null;
@@ -81,12 +87,9 @@ public class Lapin extends Animal {
 	    				// oui - est-ce que je suis suffisamment proche pour entrer dans le terrier ?
 	    				if (DistanceCarreTerrier(but) < Terrier.DISTANCE_LAPIN_ENTREE) {
 	    					// rentrer dans le terrier 
+	    					rentrerTerrier(but);
 	    					cache = true;
 	    					terrier = but;
-    						rentrerTerrier(but);
-        					// ne plus bouger
-        					vitesseX = 0;
-        					vitesseY = 0;
 	    				} else {
 	    					// pas assez proche pour rentrer, je me dirige vers le terrier
 	    					vitesseX = but.posX - posX + 0.001;
@@ -98,8 +101,6 @@ public class Lapin extends Animal {
 	    				fuirRenard(predateur);
 	    			}
 	    		}
-	    	} else {
-	    		System.out.println("Lapin caché, non mangé !");
 	    	}
     	}
     }
@@ -112,10 +113,14 @@ public class Lapin extends Animal {
     	this.terrier.retirerLapin(this);
     	vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
         vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
+        normaliser();
     }
     
     protected void rentrerTerrier(Terrier terrier) {
     	terrier.ajoutLapin(this);
+    	// ne plus bouger
+		vitesseX = 0;
+		vitesseY = 0;
     }
     
     protected void fuirRenard(Renard renard) {
