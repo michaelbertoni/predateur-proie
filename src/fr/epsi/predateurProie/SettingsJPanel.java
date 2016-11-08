@@ -17,20 +17,21 @@ import javax.swing.UIManager;
 import java.awt.Color;
 
 public class SettingsJPanel extends JPanel {
-	/**
-	 * 
-	 */
+	
+	// Serial
 	private static final long serialVersionUID = -7774983463447224599L;
 	
+	// Singleton
 	private static SettingsJPanel instance;
 
-    protected static SettingsJPanel getInstance() {
+    public static SettingsJPanel getInstance() {
         if (instance == null) {
             instance = new SettingsJPanel();
         }
         return instance;
     }
 	
+    // Attributs
 	private JTextField frequenceApparitionLapinTfield;
 	private JTextField distanceVisibiliteRenardTField;
 	private JTextField dureeVieRenardTField;
@@ -41,9 +42,7 @@ public class SettingsJPanel extends JPanel {
 	private JLabel nbreLapins;
 	private JLabel nbreRenards;
 
-	/**
-	 * Create the panel.
-	 */
+	// Méthodes
 	public SettingsJPanel() {
 		setForeground(Color.LIGHT_GRAY);
 		setPreferredSize(new Dimension(200, 400));
@@ -69,7 +68,7 @@ public class SettingsJPanel extends JPanel {
 		add(panelTextfields);
 		panelTextfields.setLayout(new BoxLayout(panelTextfields, BoxLayout.Y_AXIS));
 		
-		JLabel frequenceApparitionLapinLabel = new JLabel("Fréquence apparition lapins (sec)");
+		JLabel frequenceApparitionLapinLabel = new JLabel("Fréquence apparition lapins (ms)");
 		panelTextfields.add(frequenceApparitionLapinLabel);
 		frequenceApparitionLapinLabel.setLabelFor(frequenceApparitionLapinTfield);
 		
@@ -109,7 +108,7 @@ public class SettingsJPanel extends JPanel {
 		panelTextfields.add(nombreRenardsInitialTField);
 		nombreRenardsInitialTField.setColumns(10);
 		
-		JLabel dureeLapinCacheLabel = new JLabel("Durée lapin caché (sec)");
+		JLabel dureeLapinCacheLabel = new JLabel("Durée lapin caché (ms)");
 		panelTextfields.add(dureeLapinCacheLabel);
 		dureeLapinCacheLabel.setLabelFor(dureeLapinCacheTfield);
 		
@@ -152,10 +151,10 @@ public class SettingsJPanel extends JPanel {
 	
 	private Runnable majParametres = () -> {
         Prairie.FREQUENCE_APPARITION_ANIMAUX_MS = Long.valueOf(frequenceApparitionLapinTfield.getText());
-        Prairie.getInstance().frequenceApparitionLapin.cancel(true);
-        Prairie.getInstance().frequenceApparitionLapin = Prairie.executor.scheduleAtFixedRate(Prairie.getInstance().apparitionLapin, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS, TimeUnit.MILLISECONDS);
-        Prairie.getInstance().frequenceApparitionRenard.cancel(true);
-        Prairie.getInstance().frequenceApparitionRenard = Prairie.executor.scheduleAtFixedRate(Prairie.getInstance().apparitionRenard, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, TimeUnit.MILLISECONDS);
+        Prairie.getInstance().getFrequenceApparitionLapin().cancel(true);
+        Prairie.getInstance().setFrequenceApparitionLapin(Prairie.getExecutor().scheduleAtFixedRate(Prairie.getInstance().apparitionLapin, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS, TimeUnit.MILLISECONDS));
+        Prairie.getInstance().getFrequenceApparitionRenard().cancel(true);
+        Prairie.getInstance().setFrequenceApparitionRenard(Prairie.getExecutor().scheduleAtFixedRate(Prairie.getInstance().apparitionRenard, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, TimeUnit.MILLISECONDS));
 
         Double distanceVisibiliteRenard = Double.valueOf(distanceVisibiliteRenardTField.getText());
         Prairie.DISTANCE_VISIBILITE_RENARD = distanceVisibiliteRenard*distanceVisibiliteRenard;
@@ -167,9 +166,9 @@ public class SettingsJPanel extends JPanel {
         Prairie.DISTANCE_LAPIN_VUE_TERRIER = distanceVisibiliteTerrier*distanceVisibiliteTerrier;
     };
 
-    protected Runnable majCompteurs = () -> {
-        nbreLapins.setText("Nombre lapins : " + String.valueOf(Prairie.getInstance().lapins.size()));
-        nbreRenards.setText("Nombre renards : " + String.valueOf(Prairie.getInstance().renards.size()));
+    public Runnable majCompteurs = () -> {
+        nbreLapins.setText("Nombre lapins : " + String.valueOf(Prairie.getInstance().getLapins().size()));
+        nbreRenards.setText("Nombre renards : " + String.valueOf(Prairie.getInstance().getRenards().size()));
     };
 	
 
