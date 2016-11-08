@@ -100,7 +100,7 @@ public class Prairie extends Observable {
         	}
         }
 
-        SettingsJPanel.getInstance().majCompteurs.run();
+        Application.majCompteurs.run();
 
         setChanged();
         notifyObservers();
