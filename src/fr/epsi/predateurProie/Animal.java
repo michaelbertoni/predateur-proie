@@ -6,6 +6,7 @@ package fr.epsi.predateurProie;
 public class Animal {
 	// Constantes
     public final static double PROB_CHGT_DIRECTION = 0.05;
+    public static final double DISTANCE_MIN = 20;
 	
     // Attributs
     private double posX;
@@ -30,8 +31,17 @@ public class Animal {
     public double DistanceCarre(Animal o) {
         return (o.posX - posX) * (o.posX - posX) + (o.posY - posY) * (o.posY - posY);
     }
+    
+    public double DistanceAuMur(double murXMin, double murYMin, double murXMax, double murYMax) {
+        double min = Math.min(posX - murXMin, posY - murYMin);
+        min = Math.min(min, murXMax - posX);
+        min = Math.min(min, murYMax - posY);
+        return min;
+    }
 
     public void miseAJourPosition() {
+    	eviterMur();
+    	
         posX += PAS * vitesseX;
         posY += PAS * vitesseY;
         double largeur = Prairie.getInstance().getLargeur();
@@ -63,6 +73,25 @@ public class Animal {
         		|| posY >= PredateurProieJPanel.getInstance().getHeight() - 20) {
         	vitesseX = Prairie.getInstance().getGenerateur().nextDouble() - 0.5;
             vitesseY = Prairie.getInstance().getGenerateur().nextDouble() - 0.5;
+        }
+    }
+    
+    public void eviterMur() {
+    	double distance = DistanceAuMur(0, 0, Prairie.getInstance().getLargeur(), Prairie.getInstance().getHauteur());
+        if (distance < DISTANCE_MIN) {
+            if (distance == (posX - 0)) {
+                vitesseX += 0.3;
+            }
+            else if (distance == (posY - 0)) { 
+                vitesseY += 0.3; 
+            } 
+            else if (distance == (Prairie.getInstance().getLargeur() - posX)) {
+                vitesseX -= 0.3;
+            } 
+            else if (distance == (Prairie.getInstance().getHauteur() - posY)) {
+                vitesseY -= 0.3;
+            }   
+            normaliser();
         }
     }
 
