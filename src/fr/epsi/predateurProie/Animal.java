@@ -67,14 +67,6 @@ public class Animal {
             vitesseX = Prairie.getInstance().getGenerateur().nextDouble() - 0.5;
             vitesseY = Prairie.getInstance().getGenerateur().nextDouble() - 0.5;
         }
-        // change la direction du renard s'il arrive sur un bord du panel
-        if( posY == 0
-        		|| posX == 0 
-        		|| posX >= PredateurProieJPanel.getInstance().getWidth() - 20
-        		|| posY >= PredateurProieJPanel.getInstance().getHeight() - 20) {
-        	vitesseX = Prairie.getInstance().getGenerateur().nextDouble() - 0.5;
-            vitesseY = Prairie.getInstance().getGenerateur().nextDouble() - 0.5;
-        }
     }
     
     public void eviterMur() {

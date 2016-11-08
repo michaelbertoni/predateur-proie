@@ -3,6 +3,8 @@ package fr.epsi.predateurProie;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -45,9 +47,14 @@ public class PredateurProieJPanel extends JPanel implements Observer, MouseListe
     
     // Méthodes
     public PredateurProieJPanel() throws IOException {
-    	this.addMouseListener(this);
-        this.setPreferredSize(new Dimension(400,400));
-        this.setBackground(Color.white);
+    	addMouseListener(this);
+        setBackground(Color.white);
+        addComponentListener(new ComponentAdapter() {
+        	public void componentResized(ComponentEvent e) {
+                Prairie.getInstance().setLargeur(getWidth() - 20);
+                Prairie.getInstance().setHauteur(getHeight() - 20);
+            }
+        });
     }
 
     public void lancer() {
@@ -78,18 +85,20 @@ public class PredateurProieJPanel extends JPanel implements Observer, MouseListe
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for (int i = 0; i < prairie.getLapins().size(); i++) {
-            Lapin lapin = prairie.getLapins().get(i);
-            dessignerLapin(lapin, g);
-        }
-        for (int i = 0; i < prairie.getRenards().size(); i++) {
-            Renard renard = prairie.getRenards().get(i);
-            dessignerRenard(renard, g);
-        }
-        for (int i = 0; i < prairie.getTerriers().size(); i++) {
-        	Terrier terrier = prairie.getTerriers().get(i);
-        	dessinerTerrier(terrier, g);
-        }
+        if (prairie != null) {
+			for (int i = 0; i < prairie.getLapins().size(); i++) {
+				Lapin lapin = prairie.getLapins().get(i);
+				dessignerLapin(lapin, g);
+			}
+			for (int i = 0; i < prairie.getRenards().size(); i++) {
+				Renard renard = prairie.getRenards().get(i);
+				dessignerRenard(renard, g);
+			}
+			for (int i = 0; i < prairie.getTerriers().size(); i++) {
+				Terrier terrier = prairie.getTerriers().get(i);
+				dessinerTerrier(terrier, g);
+			} 
+		}
     }
 
     @Override
@@ -109,4 +118,5 @@ public class PredateurProieJPanel extends JPanel implements Observer, MouseListe
         this.repaint();
         this.getToolkit().sync();
     }
+    
 }
