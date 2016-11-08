@@ -20,6 +20,7 @@ public class Lapin extends Animal {
         setPosY(_posY);
         setVitesseX(Prairie.getInstance().getGenerateur().nextDouble() - 0.5);
         setVitesseY(Prairie.getInstance().getGenerateur().nextDouble() - 0.5);
+		setMortNaturelle(Prairie.ESPERANCE_VIE_ANIMAUX * 1000);
         normaliser();
     }
 
@@ -120,6 +121,13 @@ public class Lapin extends Animal {
     	setVitesseX(renard.getVitesseX());
 		setVitesseY(renard.getVitesseY());
 		normaliser();
+    }
+    
+    @Override
+    public void eviterMur() {
+    	if (cache == false) {
+    		super.eviterMur();
+    	}
     }
 
 	public boolean isCache() {

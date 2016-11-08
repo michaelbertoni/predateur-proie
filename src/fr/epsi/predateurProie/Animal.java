@@ -14,6 +14,7 @@ public class Animal {
     private double PAS;
     private double vitesseX;
     private double vitesseY;
+    private int mortNaturelle;
 
     // Méthodes
     public Animal() {}
@@ -133,6 +134,14 @@ public class Animal {
 
 	public void setVitesseY(double vitesseY) {
 		this.vitesseY = vitesseY;
+	}
+
+	public int getMortNaturelle() {
+		return mortNaturelle;
+	}
+
+	public void setMortNaturelle(int mortNaturelle) {
+		this.mortNaturelle = mortNaturelle;
 	}
     
 }

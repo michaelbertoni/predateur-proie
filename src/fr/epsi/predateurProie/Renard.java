@@ -2,8 +2,6 @@ package fr.epsi.predateurProie;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Michael on 31/10/2016.
@@ -15,7 +13,7 @@ public class Renard extends Animal {
 
     // Attributs
     private Lapin proie;
-    private ScheduledFuture<?> mortDeFaim;
+    private int mortDeFaim;
 
     // Méthodes
     public Renard(double _posX, double _posY) {
@@ -24,7 +22,8 @@ public class Renard extends Animal {
         setPosY(_posY);
         setVitesseX(Prairie.getInstance().getGenerateur().nextDouble() - 0.5);
         setVitesseY(Prairie.getInstance().getGenerateur().nextDouble() - 0.5);
-		mortDeFaim = Prairie.getExecutor().schedule(deceder, Prairie.DUREE_VIE_RENARD, TimeUnit.SECONDS);
+		mortDeFaim = Prairie.DUREE_VIE_RENARD * 1000 ;
+		setMortNaturelle(Prairie.ESPERANCE_VIE_ANIMAUX * 1000);
         normaliser();
     }
 
@@ -48,6 +47,7 @@ public class Renard extends Animal {
                 proie = null;
             }
         } else {
+        	// on accélère un peu
         	setPAS(3);
         	// on se dirigie vers le lapin
             setVitesseX(but.getPosX() - getPosX() + 0.001);
@@ -56,9 +56,6 @@ public class Renard extends Animal {
             if (DistanceCarre(but) <= PORTEE_MANGER_PROIE_CARRE) {
                 // lapin à portée
                 mangerLapin(but);
-                mortDeFaim.cancel(true);
-				mortDeFaim = Prairie.getExecutor().schedule(deceder, Prairie.DUREE_VIE_RENARD, TimeUnit.SECONDS);
-                proie = null;
             } else {
                 proie = but;
             }
@@ -66,14 +63,18 @@ public class Renard extends Animal {
         normaliser();
     }
 
-    private Runnable deceder = () -> {
-        Prairie.getInstance().getRenards().remove(this);
-        System.out.println("Un renard est décédé !");
-    };
-
     private void mangerLapin(Lapin lapin) {
         Prairie.getInstance().getLapins().remove(lapin);
         System.out.println("Un lapin s'est fait manger !");
+        mortDeFaim = Prairie.DUREE_VIE_RENARD * 1000;
+        proie = null;
+    }
+    
+    @Override
+	public void eviterMur() {
+    	if (proie == null) {
+    		super.eviterMur();
+    	}
     }
 
 	public Lapin getProie() {
@@ -83,5 +84,13 @@ public class Renard extends Animal {
 	public void setProie(Lapin proie) {
 		this.proie = proie;
 	}
-    
+
+	public int getMortDeFaim() {
+		return mortDeFaim;
+	}
+
+	public void setMortDeFaim(int mortDeFaim) {
+		this.mortDeFaim = mortDeFaim;
+	}
+	
 }
