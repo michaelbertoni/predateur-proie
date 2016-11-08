@@ -1,42 +1,37 @@
 package fr.epsi.predateurProie;
 
-import java.io.Serializable;
-
 /**
  * Created by Michael on 31/10/2016.
  */
-public class Animal implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7216145130328458156L;
-
+public class Animal {
 	// Constantes
-    protected final static double PROB_CHGT_DIRECTION = 0.05;
+    public final static double PROB_CHGT_DIRECTION = 0.05;
 	
-    protected double posX;
-    protected double posY;
-    protected double PAS;
-    protected double vitesseX;
-    protected double vitesseY;
+    // Attributs
+    private double posX;
+    private double posY;
+    private double PAS;
+    private double vitesseX;
+    private double vitesseY;
 
-    protected Animal() {}
+    // Méthodes
+    public Animal() {}
 
-    protected void normaliser() {
+    public void normaliser() {
         double longueur = Math.sqrt(vitesseX * vitesseX + vitesseY * vitesseY);
         vitesseX /= longueur;
         vitesseY /= longueur;
     }
 
-    protected double Distance(Animal o) {
+    public double Distance(Animal o) {
         return Math.sqrt((o.posX - posX) * (o.posX - posX) + (o.posY - posY) * (o.posY - posY));
     }
 
-    protected double DistanceCarre(Animal o) {
+    public double DistanceCarre(Animal o) {
         return (o.posX - posX) * (o.posX - posX) + (o.posY - posY) * (o.posY - posY);
     }
 
-    protected void miseAJourPosition() {
+    public void miseAJourPosition() {
         posX += PAS * vitesseX;
         posY += PAS * vitesseY;
         double largeur = Prairie.getInstance().getLargeur();
@@ -55,19 +50,60 @@ public class Animal implements Serializable {
         }
     }
     
-    protected void changementDirectionAleatoire() {
+    public void changementDirectionAleatoire() {
     	// Changement de direction aléatoire
-        if (Prairie.getInstance().generateur.nextDouble() < PROB_CHGT_DIRECTION) {
-            vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
-            vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
+        if (Prairie.getInstance().getGenerateur().nextDouble() < PROB_CHGT_DIRECTION) {
+            vitesseX = Prairie.getInstance().getGenerateur().nextDouble() - 0.5;
+            vitesseY = Prairie.getInstance().getGenerateur().nextDouble() - 0.5;
         }
         // change la direction du renard s'il arrive sur un bord du panel
         if( posY == 0
         		|| posX == 0 
         		|| posX >= PredateurProieJPanel.getInstance().getWidth() - 20
         		|| posY >= PredateurProieJPanel.getInstance().getHeight() - 20) {
-        	vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
-            vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
+        	vitesseX = Prairie.getInstance().getGenerateur().nextDouble() - 0.5;
+            vitesseY = Prairie.getInstance().getGenerateur().nextDouble() - 0.5;
         }
     }
+
+	public double getPosX() {
+		return posX;
+	}
+
+	public void setPosX(double posX) {
+		this.posX = posX;
+	}
+
+	public double getPosY() {
+		return posY;
+	}
+
+	public void setPosY(double posY) {
+		this.posY = posY;
+	}
+
+	public double getPAS() {
+		return PAS;
+	}
+
+	public void setPAS(double pAS) {
+		PAS = pAS;
+	}
+
+	public double getVitesseX() {
+		return vitesseX;
+	}
+
+	public void setVitesseX(double vitesseX) {
+		this.vitesseX = vitesseX;
+	}
+
+	public double getVitesseY() {
+		return vitesseY;
+	}
+
+	public void setVitesseY(double vitesseY) {
+		this.vitesseY = vitesseY;
+	}
+    
 }

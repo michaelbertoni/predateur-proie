@@ -9,29 +9,24 @@ import java.util.stream.Collectors;
  */
 public class Lapin extends Animal {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8465454842358844430L;
-	
-	protected boolean cache = false;
-	protected Terrier terrier;
-	protected int compteurTempsCache = 0;
+	private boolean cache = false;
+	private Terrier terrier;
+	private int compteurTempsCache = 0;
 
     // Méthodes
-    protected Lapin(double _posX, double _posY) {
-        PAS = 2;
-        posX = _posX;
-        posY = _posY;
-        vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
-        vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
+    public Lapin(double _posX, double _posY) {
+        setPAS(2);
+        setPosX(_posX);
+        setPosY(_posY);
+        setVitesseX(Prairie.getInstance().getGenerateur().nextDouble() - 0.5);
+        setVitesseY(Prairie.getInstance().getGenerateur().nextDouble() - 0.5);
         normaliser();
     }
 
-    protected void miseAJourDirection(ArrayList<Renard> renards, ArrayList<Terrier> terriers) {
+    public void miseAJourDirection(ArrayList<Renard> renards, ArrayList<Terrier> terriers) {
     	List<Renard> renardsProches = new ArrayList<>();
     	renardsProches = renards.stream() //
-    			.filter(d -> d.proie == this) //
+    			.filter(d -> d.getProie() == this) //
     			.sorted((r1, r2) -> (DistanceCarre(r1) < DistanceCarre(r2) ? -1 : 1))//
     			.collect(Collectors.toList());
     	Renard predateur = null;
@@ -45,8 +40,8 @@ public class Lapin extends Animal {
     		
     		// je suis caché ? si oui attendre quelques temps avant de sortir
     		if (cache == true) {
-    			if (compteurTempsCache < Prairie.DUREE_LAPIN_CACHE*1000/PredateurProieJPanel.RAFRAICHISSEMENT_PRAIRIE) {
-    				compteurTempsCache++;
+    			if (compteurTempsCache < Prairie.DUREE_LAPIN_CACHE) {
+    				compteurTempsCache += PredateurProieJPanel.RAFRAICHISSEMENT_PRAIRIE;
     			} else {
     				sortirTerrier();
         			cache = false;
@@ -54,7 +49,7 @@ public class Lapin extends Animal {
     			}
     			
     		} else {
-    			PAS = 2;
+    			setPAS(2);
     			changementDirectionAleatoire();
         		normaliser();
     		}
@@ -62,7 +57,7 @@ public class Lapin extends Animal {
     		// oui, chassé. je suis caché ?
     		if (cache == false) {
 	    		// non, chassé, j'accélère
-	    		PAS = 4;
+	    		setPAS(4);
 	    		
 	    		// quels sont les terriers aux alentours, disponibles ?
 	    		List<Terrier> terriersDispos = new ArrayList<>();
@@ -90,8 +85,8 @@ public class Lapin extends Animal {
 	    					terrier = but;
 	    				} else {
 	    					// pas assez proche pour rentrer, je me dirige vers le terrier
-	    					vitesseX = but.posX - posX + 0.001;
-	    		            vitesseY = but.posY - posY + 0.001;
+	    					setVitesseX(but.getPosX() - getPosX() + 0.001);
+	    		            setVitesseY(but.getPosY() - getPosY() + 0.001);
 	    		            normaliser();
 	    				}
 	    			} else {
@@ -103,27 +98,52 @@ public class Lapin extends Animal {
     	}
     }
     
-    protected double DistanceCarreTerrier(Terrier t) {
-    	return (t.posX - posX) * (t.posX - posX) + (t.posY - posY) * (t.posY - posY);
+    public double DistanceCarreTerrier(Terrier t) {
+    	return (t.getPosX() - getPosX()) * (t.getPosX() - getPosX()) + (t.getPosY() - getPosY()) * (t.getPosY() - getPosY());
     }
     
-    protected void sortirTerrier() {
-    	this.terrier.retirerLapin(this);
-    	vitesseX = Prairie.getInstance().generateur.nextDouble() - 0.5;
-        vitesseY = Prairie.getInstance().generateur.nextDouble() - 0.5;
+    public void sortirTerrier() {
+    	terrier.retirerLapin(this);
+    	setVitesseX(Prairie.getInstance().getGenerateur().nextDouble() - 0.5);
+        setVitesseY(Prairie.getInstance().getGenerateur().nextDouble() - 0.5);
         normaliser();
     }
     
-    protected void rentrerTerrier(Terrier terrier) {
+    public void rentrerTerrier(Terrier terrier) {
     	terrier.ajoutLapin(this);
     	// ne plus bouger
-		vitesseX = 0;
-		vitesseY = 0;
+		setVitesseX(0);
+		setVitesseY(0);
     }
     
-    protected void fuirRenard(Renard renard) {
-    	vitesseX = renard.vitesseX;
-		vitesseY = renard.vitesseY;
+    public void fuirRenard(Renard renard) {
+    	setVitesseX(renard.getVitesseX());
+		setVitesseY(renard.getVitesseY());
 		normaliser();
     }
+
+	public boolean isCache() {
+		return cache;
+	}
+
+	public void setCache(boolean cache) {
+		this.cache = cache;
+	}
+
+	public Terrier getTerrier() {
+		return terrier;
+	}
+
+	public void setTerrier(Terrier terrier) {
+		this.terrier = terrier;
+	}
+
+	public int getCompteurTempsCache() {
+		return compteurTempsCache;
+	}
+
+	public void setCompteurTempsCache(int compteurTempsCache) {
+		this.compteurTempsCache = compteurTempsCache;
+	}
+    
 }
