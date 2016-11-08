@@ -33,6 +33,7 @@ public class Prairie extends Observable {
     public static int NOMBRE_LAPINS_INITIAL = 15;
     public static int NOMBRE_RENARDS_INITIAL = 10;
     public static double DISTANCE_VISIBILITE_RENARD = 900;
+    public static int ESPERANCE_VIE_ANIMAUX = 120;
     public static int DUREE_VIE_RENARD = 30;
     public static int DUREE_LAPIN_CACHE = 1000;
 	public static double DISTANCE_LAPIN_VUE_TERRIER = 90000;
@@ -79,13 +80,24 @@ public class Prairie extends Observable {
     }
 
     public Runnable miseAJour = () -> {
-        for (Lapin lapin : lapins) {
-            lapin.miseAJourDirection(renards, terriers);
-            lapin.miseAJourPosition();
+        for (int i = 0; i < lapins.size(); i++) {
+        	if (lapins.get(i).getMortNaturelle() > 0) {
+        		lapins.get(i).miseAJourDirection(renards, terriers);
+        		lapins.get(i).miseAJourPosition();
+        		lapins.get(i).setMortNaturelle(lapins.get(i).getMortNaturelle() - PredateurProieJPanel.RAFRAICHISSEMENT_PRAIRIE);
+        	} else {
+        		mortLapin(lapins.get(i));
+        	}
         }
-        for (Renard renard : renards) {
-            renard.miseAJourDirection(lapins);
-            renard.miseAJourPosition();
+        for (int i = 0; i < renards.size(); i++) {
+        	if (renards.get(i).getMortDeFaim() > 0 && renards.get(i).getMortNaturelle() > 0) {
+        		renards.get(i).miseAJourDirection(lapins);
+        		renards.get(i).miseAJourPosition();
+        		renards.get(i).setMortDeFaim(renards.get(i).getMortDeFaim() - PredateurProieJPanel.RAFRAICHISSEMENT_PRAIRIE);
+        		renards.get(i).setMortNaturelle(renards.get(i).getMortNaturelle() - PredateurProieJPanel.RAFRAICHISSEMENT_PRAIRIE);
+        	} else {
+        		mortRenard(renards.get(i));
+        	}
         }
 
         SettingsJPanel.getInstance().majCompteurs.run();
@@ -94,7 +106,21 @@ public class Prairie extends Observable {
         notifyObservers();
     };
     
-    public Runnable apparitionLapin = () -> {
+    private void mortRenard(Renard renard) {
+    	Prairie.getInstance().getRenards().remove(renard);
+    	if (renard.getMortDeFaim() <= 0 && renard.getMortNaturelle() > 0) {
+    		System.out.println("Un renard est mort de faim !");
+		} else {
+			System.out.println("Un renard est décédé de mort naturelle !");
+		}
+    };
+    
+    private void mortLapin(Lapin lapin) {
+    	Prairie.getInstance().getLapins().remove(lapin);
+    	System.out.println("Un lapin est décédé de mort naturelle !");
+    }
+    
+	public Runnable apparitionLapin = () -> {
         Lapin lapin = new Lapin(generateur.nextDouble() * largeur, generateur.nextDouble() * hauteur);
         lapins.add(lapin);
     };
@@ -107,6 +133,8 @@ public class Prairie extends Observable {
     public void creerTerrier(Double posX, Double posY) {
     	this.terriers.add(new Terrier(posX, posY));
     }
+    
+    
 
 	public static ScheduledExecutorService getExecutor() {
 		return executor;
