@@ -1,4 +1,4 @@
-package fr.epsi.predateurProie;
+package fr.epsi.predateurProie.entities;
 
 /**
  * Created by Michael on 31/10/2016.

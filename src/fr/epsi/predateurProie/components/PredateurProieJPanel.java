@@ -1,7 +1,13 @@
-package fr.epsi.predateurProie;
+package fr.epsi.predateurProie.components;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import fr.epsi.predateurProie.entities.Lapin;
+import fr.epsi.predateurProie.entities.Prairie;
+import fr.epsi.predateurProie.entities.Renard;
+import fr.epsi.predateurProie.entities.Terrier;
+
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -23,10 +29,10 @@ public class PredateurProieJPanel extends JPanel implements Observer, MouseListe
 	
 	// Constantes
 	public final static int RAFRAICHISSEMENT_PRAIRIE = 25;
-	private final BufferedImage imageRenard = ImageIO.read(this.getClass().getResource("img/fox.png"));
-    private final BufferedImage imageLapin = ImageIO.read(this.getClass().getResource("img/rabbit.png"));
-    private final BufferedImage imageLapinCache = ImageIO.read(this.getClass().getResource("img/rabbithidden.png"));
-    private final BufferedImage imageTerrier = ImageIO.read(this.getClass().getResource("img/hole.png"));
+	private final BufferedImage imageRenard = ImageIO.read(this.getClass().getResource("/fr/epsi/predateurProie/resources/fox.png"));
+    private final BufferedImage imageLapin = ImageIO.read(this.getClass().getResource("/fr/epsi/predateurProie/resources/rabbit.png"));
+    private final BufferedImage imageLapinCache = ImageIO.read(this.getClass().getResource("/fr/epsi/predateurProie/resources/rabbithidden.png"));
+    private final BufferedImage imageTerrier = ImageIO.read(this.getClass().getResource("/fr/epsi/predateurProie/resources/hole.png"));
 
 	// Singleton
 	private static PredateurProieJPanel instance;

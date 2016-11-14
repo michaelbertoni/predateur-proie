@@ -1,4 +1,4 @@
-package fr.epsi.predateurProie;
+package fr.epsi.predateurProie.components;
 
 import java.io.IOException;
 
@@ -8,14 +8,11 @@ import javax.swing.JEditorPane;
 
 public class ManuelJFrame extends JFrame {
 
-	/**
-	 * 
-	 */
+	// Serial
 	private static final long serialVersionUID = 6453475499274768074L;
 
 	// Singleton
 	private static ManuelJFrame instance;
-	private JScrollPane contentPane;
 
     public static ManuelJFrame getInstance() {
         if (instance == null) {
@@ -23,21 +20,22 @@ public class ManuelJFrame extends JFrame {
         }
         return instance;
     }
+    
+    // Attribut
+    private JScrollPane contentPane;
 
-	/**
-	 * Create the frame.
-	 */
+    // Méthodes
 	public ManuelJFrame() {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(670,400,600,500);
+		setType(javax.swing.JFrame.Type.UTILITY);
+		setBounds(670,500,600,500);
 		setTitle("Manuel - Prédateur vs Proie !");
 		
 		
 		JEditorPane editorPane = new JEditorPane();
 		editorPane.setContentType("text/html");
-		editorPane.getDocument().putProperty("IgnoreCharsetDirective", Boolean.TRUE);
 		try {
-			editorPane.setPage(this.getClass().getResource("doc/manuel.html"));
+			editorPane.setPage(this.getClass().getResource("/fr/epsi/predateurProie/resources/manuel.html"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
