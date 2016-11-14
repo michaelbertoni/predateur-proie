@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 import javax.swing.JToolBar;
 import javax.swing.Box;
+import java.awt.Toolkit;
 
 public class Application extends JFrame {
 
@@ -53,6 +54,7 @@ public class Application extends JFrame {
 
 	// Méthodes
 	public Application() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Application.class.getResource("/fr/epsi/predateurProie/resources/fox.png")));
 		setTitle("Prédateur vs Proie !");
 		setLocationByPlatform(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
