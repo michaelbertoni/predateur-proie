@@ -31,7 +31,7 @@ public class Prairie extends Observable {
     // PARAMETRES DE L'APPLICATION
     public static long FREQUENCE_APPARITION_ANIMAUX_MS = 1000;
     public static int NOMBRE_LAPINS_INITIAL = 15;
-    public static int NOMBRE_RENARDS_INITIAL = 10;
+    public static int NOMBRE_RENARDS_INITIAL = 20;
     public static double DISTANCE_VISIBILITE_RENARD = 900;
     public static int ESPERANCE_VIE_ANIMAUX = 120;
     public static int DUREE_VIE_RENARD = 30;
@@ -138,6 +138,10 @@ public class Prairie extends Observable {
 
 	public static ScheduledExecutorService getExecutor() {
 		return executor;
+	}
+	
+	public static void getNewExecutor() {
+		executor = Executors.newSingleThreadScheduledExecutor();
 	}
 
 	public Random getGenerateur() {

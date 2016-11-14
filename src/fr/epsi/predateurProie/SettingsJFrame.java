@@ -55,10 +55,10 @@ public class SettingsJFrame extends JFrame {
 
 	// Méthodes
 	public SettingsJFrame() {
-		setTitle("Paramètres");
+		setTitle("Paramètres - Prédateur vs Proie !");
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setLocationByPlatform(true);
-		setBounds(24, 5, 344, 271);
+		setBounds(670, 50, 500, 300);
 		
 		JPanel mainPanel = new JPanel();
 		setContentPane(mainPanel);

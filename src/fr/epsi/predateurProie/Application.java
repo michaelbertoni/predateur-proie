@@ -2,6 +2,7 @@ package fr.epsi.predateurProie;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -13,6 +14,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 import javax.swing.JToolBar;
 import javax.swing.Box;
@@ -50,7 +54,7 @@ public class Application extends JFrame {
 		setTitle("Prédateur vs Proie !");
 		setLocationByPlatform(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(50, 50, 550, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -77,16 +81,53 @@ public class Application extends JFrame {
 				System.exit(0);
 			}
 		});
+		mainMenu.add(exitItem);
+		
+		JMenu simulationMenu = new JMenu("Simulation");
+		menuBar.add(simulationMenu);
+		
+		JMenuItem playPauseMenuItem = new JMenuItem("Play/Pause");
+		playPauseMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (Prairie.getExecutor().isShutdown()) {
+					Prairie.getNewExecutor();
+					Prairie.getExecutor().scheduleAtFixedRate(Prairie.getInstance().miseAJour, 0, PredateurProieJPanel.RAFRAICHISSEMENT_PRAIRIE, TimeUnit.MILLISECONDS);
+					Prairie.getInstance().setFrequenceApparitionLapin(Prairie.getExecutor().scheduleAtFixedRate(Prairie.getInstance().apparitionLapin, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS, TimeUnit.MILLISECONDS));
+					Prairie.getInstance().setFrequenceApparitionRenard(Prairie.getExecutor().scheduleAtFixedRate(Prairie.getInstance().apparitionRenard, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, Prairie.FREQUENCE_APPARITION_ANIMAUX_MS*10, TimeUnit.MILLISECONDS));
+				} else {
+					Prairie.getExecutor().shutdown();
+				}
+			}
+		});
+		simulationMenu.add(playPauseMenuItem);
 		
 		JMenuItem restartItem = new JMenuItem("Réinitialiser");
+		simulationMenu.add(restartItem);
+		
+		JMenu aideMenu = new JMenu("Aide");
+		menuBar.add(aideMenu);
+		
+		JMenuItem manuelItem = new JMenuItem("Manuel");
+		manuelItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ManuelJFrame.getInstance().setVisible(true);;
+			}
+		});
+		aideMenu.add(manuelItem);
+		
+		JMenuItem aProposItem = new JMenuItem("À propos");
+		aProposItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AProposJFrame.getInstance().setVisible(true);
+			}
+		});
+		aideMenu.add(aProposItem);
 		restartItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Prairie.getInstance().reinitialiserPrairie();
                 PredateurProieJPanel.getInstance().lancer();
 			}
 		});
-		mainMenu.add(restartItem);
-		mainMenu.add(exitItem);
 		
 		PredateurProieJPanel panel = PredateurProieJPanel.getInstance();
 		contentPane.add(panel, BorderLayout.CENTER);
