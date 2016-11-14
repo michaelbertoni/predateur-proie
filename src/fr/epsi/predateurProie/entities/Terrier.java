@@ -1,4 +1,4 @@
-package fr.epsi.predateurProie;
+package fr.epsi.predateurProie.entities;
 
 import java.util.ArrayList;
 

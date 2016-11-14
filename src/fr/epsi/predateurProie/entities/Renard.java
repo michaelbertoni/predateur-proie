@@ -1,4 +1,4 @@
-package fr.epsi.predateurProie;
+	package fr.epsi.predateurProie.entities;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +9,7 @@ import java.util.Collections;
 public class Renard extends Animal {
 
 	// Constante
-    private final static double PORTEE_MANGER_PROIE_CARRE = 100;
+    private final static double PORTEE_MANGER_PROIE_CARRE = 25;
 
     // Attributs
     private Lapin proie;

@@ -2,7 +2,6 @@ package fr.epsi.predateurProie;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -10,12 +9,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+
+import fr.epsi.predateurProie.components.AProposJFrame;
+import fr.epsi.predateurProie.components.ManuelJFrame;
+import fr.epsi.predateurProie.components.PredateurProieJPanel;
+import fr.epsi.predateurProie.components.SettingsJFrame;
+import fr.epsi.predateurProie.entities.Prairie;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 import javax.swing.JToolBar;
@@ -23,15 +27,15 @@ import javax.swing.Box;
 
 public class Application extends JFrame {
 
+	// Serial
 	private static final long serialVersionUID = -7687618967101960830L;
 	
+	// Attributs
 	private JPanel contentPane;
 	private static JLabel nbreLapins;
 	private static JLabel nbreRenards;
 
-	/**
-	 * Launch the application.
-	 */
+	// Lancement de l'application
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -47,9 +51,7 @@ public class Application extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
+	// Méthodes
 	public Application() {
 		setTitle("Prédateur vs Proie !");
 		setLocationByPlatform(true);

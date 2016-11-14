@@ -1,4 +1,4 @@
-package fr.epsi.predateurProie;
+package fr.epsi.predateurProie.entities;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -6,6 +6,9 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+
+import fr.epsi.predateurProie.Application;
+import fr.epsi.predateurProie.components.PredateurProieJPanel;
 
 /**
  * Created by Michael on 31/10/2016.
@@ -32,7 +35,7 @@ public class Prairie extends Observable {
     public static long FREQUENCE_APPARITION_ANIMAUX_MS = 1000;
     public static int NOMBRE_LAPINS_INITIAL = 15;
     public static int NOMBRE_RENARDS_INITIAL = 20;
-    public static double DISTANCE_VISIBILITE_RENARD = 900;
+    public static double DISTANCE_VISIBILITE_RENARD = 2500;
     public static int ESPERANCE_VIE_ANIMAUX = 120;
     public static int DUREE_VIE_RENARD = 30;
     public static int DUREE_LAPIN_CACHE = 1000;
@@ -71,11 +74,11 @@ public class Prairie extends Observable {
         hauteur = _hauteur - 20;
         lapins.clear();
         for (int i = 0; i < _nbLapins; i++) {
-        	apparitionLapin.run();
+        	creerLapin();
         }
         renards.clear();
         for (int i = 0; i < _nbRenards; i++) {
-            apparitionRenard.run();
+            creerRenard();
         }
     }
 
@@ -121,14 +124,26 @@ public class Prairie extends Observable {
     }
     
 	public Runnable apparitionLapin = () -> {
-        Lapin lapin = new Lapin(generateur.nextDouble() * largeur, generateur.nextDouble() * hauteur);
-        lapins.add(lapin);
+        if (lapins.size() > 1) {
+        	creerLapin();
+        }
     };
     
     public Runnable apparitionRenard = () -> {
+    	if (renards.size() > 1) {
+    		creerRenard();
+    	}
+    };
+    
+    private void creerLapin() {
+    	Lapin lapin = new Lapin(generateur.nextDouble() * largeur, generateur.nextDouble() * hauteur);
+		lapins.add(lapin);
+    }
+    
+    private void creerRenard() {
     	Renard renard = new Renard(generateur.nextDouble() * largeur, generateur.nextDouble() * hauteur);
         renards.add(renard);
-    };
+    }
     
     public void creerTerrier(Double posX, Double posY) {
     	this.terriers.add(new Terrier(posX, posY));

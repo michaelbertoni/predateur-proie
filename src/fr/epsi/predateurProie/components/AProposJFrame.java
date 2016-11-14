@@ -1,4 +1,4 @@
-package fr.epsi.predateurProie;
+package fr.epsi.predateurProie.components;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,11 +17,8 @@ import javax.swing.BoxLayout;
 
 public class AProposJFrame extends JFrame {
 
-	/**
-	 * 
-	 */
+	// Serial
 	private static final long serialVersionUID = -5546585852646598599L;
-	private JPanel contentPane;
 
 	// Singleton
 	private static AProposJFrame instance;
@@ -32,12 +29,14 @@ public class AProposJFrame extends JFrame {
         }
         return instance;
     }
+    
+    // Attributs
+    private JPanel contentPane;
 
-	/**
-	 * Create the frame.
-	 */
+    // Méthodes
 	public AProposJFrame() {
 		setTitle("A propos - Prédateur vs Proie !");
+		setType(javax.swing.JFrame.Type.UTILITY);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(50, 570, 536, 434);
 		contentPane = new JPanel();
@@ -49,11 +48,11 @@ public class AProposJFrame extends JFrame {
 		contentPane.add(panel);
 		
 		JLabel foxImg = new JLabel("");
-		foxImg.setIcon(new ImageIcon(this.getClass().getResource("/fr/epsi/predateurProie/img/fox.png")));
+		foxImg.setIcon(new ImageIcon(this.getClass().getResource("/fr/epsi/predateurProie/resources/fox.png")));
 		panel.add(foxImg);
 		
 		JLabel rabbitImg = new JLabel("");
-		rabbitImg.setIcon(new ImageIcon(this.getClass().getResource("/fr/epsi/predateurProie/img/rabbit.png")));
+		rabbitImg.setIcon(new ImageIcon(this.getClass().getResource("/fr/epsi/predateurProie/resources/rabbit.png")));
 		panel.add(rabbitImg);
 		
 		JTextPane txtpnprdateurVsProie = new JTextPane();

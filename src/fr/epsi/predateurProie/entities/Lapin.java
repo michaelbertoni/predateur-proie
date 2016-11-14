@@ -1,8 +1,10 @@
-package fr.epsi.predateurProie;
+package fr.epsi.predateurProie.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import fr.epsi.predateurProie.components.PredateurProieJPanel;
 
 /**
  * Created by Michael on 31/10/2016.
